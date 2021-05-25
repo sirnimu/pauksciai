@@ -1,0 +1,51 @@
+.container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffc84f;
+
+  .quiz {
+    box-sizing: border-box;
+    padding: 2rem;
+    border-radius: 2rem;
+    background-color: white;
+    height: clamp(50vh, 768px, 100vh);
+    width: clamp(50vh, 1080px, 100vh);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    header {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+
+    img {
+      width: 50%;
+    }
+
+    form {
+      input {
+        box-sizing: border-box;
+        height: 3rem;
+        padding: 1rem;
+        border: none;
+        font-size: 1rem;
+      }
+
+      button {
+        box-sizing: border-box;
+        height: 3rem;
+        padding: 1rem 2rem;
+        border: none;
+        background-color: #ffc84f;
+        font-size: 1rem;
+        margin: 1rem;
+      }
+    }
+  }
+}
