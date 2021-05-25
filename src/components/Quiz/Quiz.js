@@ -46,7 +46,7 @@ const Quiz = () => {
                 value={value}
                 onChange={changeHandler}
                 type="text"
-                placeholder="Paukštis"
+                placeholder="Paukštis..."
                 autoFocus
               />
               <button type="submit">Spėti</button>

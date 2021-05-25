@@ -20,12 +20,12 @@
     align-items: center;
 
     header {
-      font-size: 3rem;
+      font-size: 2rem;
       font-weight: bold;
     }
 
     img {
-      width: 50%;
+      min-width: 50%;
     }
 
     form {
@@ -40,11 +40,34 @@
       button {
         box-sizing: border-box;
         height: 3rem;
-        padding: 1rem 2rem;
+        padding: 1rem 3rem;
         border: none;
         background-color: #ffc84f;
         font-size: 1rem;
         margin: 1rem;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    .quiz {
+      padding: 1rem;
+      border-radius: 0;
+
+      img {
+        width: 100%;
+      }
+
+      form {
+        input,
+        button {
+          box-sizing: border-box;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+        }
       }
     }
   }
