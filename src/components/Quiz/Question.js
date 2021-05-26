@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import classes from "./Question.module.scss";
 import Button from "../UI/Button";
 
 const Question = (props) => {
+  const imgRef = useRef();
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -18,10 +19,18 @@ const Question = (props) => {
     setValue("");
   };
 
+  const isTouchScreen = "ontouchstart" in document.documentElement;
+
+  if (imgRef.current && isTouchScreen) {
+    imgRef.current.focus();
+  }
+
   return (
     <section className={classes.question}>
       <header>Koks tai paukštis?</header>
       <img
+        ref={imgRef}
+        tabIndex="0"
         src={props.bird.imgSrc}
         alt="bird"
         onLoad={(e) => {
