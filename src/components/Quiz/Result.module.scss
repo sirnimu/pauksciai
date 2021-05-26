@@ -1,0 +1,23 @@
+.result {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  p {
+    margin: 2rem;
+    text-align: center;
+
+    span {
+      font-weight: bold;
+    }
+  }
+}
+
+.bad {
+  color: #cc0000;
+}
+
+.good {
+  color: forestgreen;
+}

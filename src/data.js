@@ -19,6 +19,14 @@ const data = [
     name: "Baltasis gandras",
     src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/White_Stork_%28Ciconia_ciconia%29.jpg/1024px-White_Stork_%28Ciconia_ciconia%29.jpg",
   },
+  {
+    name: "Juodagalvė sniegena",
+    src: "https://cdn.pixabay.com/photo/2016/01/06/22/25/animal-1125111_960_720.jpg",
+  },
+  {
+    name: "Pilkoji pečialinda",
+    src: "https://upload.wikimedia.org/wikipedia/commons/9/99/Chiffchaff_Phylloscopus_collybita_3.jpg",
+  },
 ];
 
 export default data;

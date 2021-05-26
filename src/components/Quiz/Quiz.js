@@ -1,62 +1,72 @@
-import { useState } from "react";
-import data from "../../data";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
+import data from "../../data";
 import classes from "./Quiz.module.scss";
+import Result from "./Result";
+import Question from "./Question";
+import Answer from "./Answer";
+import shuffleArray from "../../helpers/shuffle";
 
 const Quiz = () => {
-  const [value, setValue] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [correctCount, setcorrectCount] = useState(0);
-  const isLastQuestion = currentIndex === data.length;
+  const [birds, setBirds] = useState([]);
+  const [showResult, setShowResult] = useState(false);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const dispatch = useDispatch();
 
-  const changeHandler = (e) => {
-    setValue(e.target.value);
+  useEffect(() => {
+    let birdsList = [];
+    data.forEach((bird, index) => {
+      birdsList.push({ id: index, imgSrc: bird.src, name: bird.name });
+    });
+    dispatch({ type: "set_quiz_length", length: birdsList.length });
+    shuffleArray(birdsList);
+    setBirds(birdsList);
+  }, [dispatch]);
+
+  const tryAgain = () => {
+    setShowResult(false);
+    setCurrentIndex(0);
+    dispatch({ type: "reset" });
+    dispatch({ type: "set_quiz_length", length: birds.length });
   };
 
-  const submitAnswerHandler = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    if (data[currentIndex].name.toLowerCase().includes(value.toLowerCase())) {
-      setcorrectCount((count) => count + 1);
+  const getNextQuestion = () => {
+    const isLastQuestion = currentIndex === birds.length - 1;
+    if (isLastQuestion) {
+      setShowResult(true);
+    } else {
+      setCurrentIndex((index) => index + 1);
     }
+  };
 
-    setCurrentIndex((count) => count + 1);
-    setValue("");
+  const hideAnswer = () => {
+    getNextQuestion();
+    setShowAnswer(false);
+  };
+
+  const showNextQuestion = (answerWasCorrect) => {
+    if (answerWasCorrect) {
+      dispatch({ type: "answer_correctly" });
+      getNextQuestion();
+    } else {
+      setShowAnswer(true);
+    }
   };
 
   return (
     <div className={classes.container}>
       <div className={classes.quiz}>
-        {!isLastQuestion && (
-          <>
-            <header>Koks tai paukštis?</header>
-            <img
-              src={data[currentIndex].src}
-              alt="bird"
-              onLoad={(e) => {
-                setIsLoading(false);
-              }}
-              style={{ display: isLoading ? "none" : "flex" }}
-            />
-
-            <form onSubmit={submitAnswerHandler}>
-              <input
-                value={value}
-                onChange={changeHandler}
-                type="text"
-                placeholder="Paukštis..."
-                autoFocus
-              />
-              <button type="submit">Spėti</button>
-            </form>
-          </>
+        {showResult && <Result tryAgainHandler={tryAgain} />}
+        {!showResult && showAnswer && (
+          <Answer name={birds[currentIndex].name} onClose={hideAnswer} />
         )}
-        {isLastQuestion && (
-          <p>
-            Atspėjai {correctCount}/{data.length} paukščius!
-          </p>
+        {!showResult && !showAnswer && (
+          <Question
+            bird={{ ...birds[currentIndex] }}
+            showNextQuestion={showNextQuestion}
+          />
         )}
       </div>
     </div>

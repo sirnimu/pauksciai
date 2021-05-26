@@ -1,10 +1,12 @@
 import Quiz from "./components/Quiz/Quiz";
+import { Provider } from "react-redux";
+import store from "./store/index";
 
 function App() {
   return (
-    <div className="App">
+    <Provider store={store}>
       <Quiz />
-    </div>
+    </Provider>
   );
 }
 
