@@ -1,26 +1,26 @@
-import { createStore } from "redux";
+import { createSlice, configureStore } from "@reduxjs/toolkit";
 
 const initialState = { correctAnswersCount: 0, quizLength: 5 };
 
-const quizReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "set_quiz_length":
-      return {
-        ...state,
-        quizLength: action.length,
-      };
-    case "answer_correctly":
-      return {
-        ...state,
-        correctAnswersCount: state.correctAnswersCount + 1,
-      };
-    case "reset":
-      return initialState;
-    default:
-      return state;
-  }
-};
+const quizSlice = createSlice({
+  name: "quiz",
+  initialState,
+  reducers: {
+    setQuizLength(state, action) {
+      state.quizLength = action.payload;
+    },
+    incrementCorrectAnswers(state) {
+      state.correctAnswersCount++;
+    },
+    resetQuiz(state) {
+      state.correctAnswersCount = 0;
+    },
+  },
+});
 
-const store = createStore(quizReducer);
+const store = configureStore({
+  reducer: quizSlice.reducer,
+});
 
+export const quizActions = quizSlice.actions;
 export default store;

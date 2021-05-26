@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
+import { quizActions } from "../../store/index";
+import shuffleArray from "../../helpers/shuffle";
+import convertUTFtoLatin from "../../helpers/convertUTFtoLatin";
 import data from "../../data";
 import classes from "./Quiz.module.scss";
 import Result from "./Result";
 import Question from "./Question";
 import Answer from "./Answer";
-import shuffleArray from "../../helpers/shuffle";
 
 const Quiz = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [birds, setBirds] = useState([]);
-  const [showResult, setShowResult] = useState(false);
+  const [correct, setCorrect] = useState(null);
+  const [guess, setGuess] = useState("");
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showResult, setShowResult] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,7 +24,7 @@ const Quiz = () => {
     data.forEach((bird, index) => {
       birdsList.push({ id: index, imgSrc: bird.src, name: bird.name });
     });
-    dispatch({ type: "set_quiz_length", length: birdsList.length });
+    dispatch(quizActions.setQuizLength(birdsList.length));
     shuffleArray(birdsList);
     setBirds(birdsList);
   }, [dispatch]);
@@ -28,8 +32,7 @@ const Quiz = () => {
   const tryAgain = () => {
     setShowResult(false);
     setCurrentIndex(0);
-    dispatch({ type: "reset" });
-    dispatch({ type: "set_quiz_length", length: birds.length });
+    dispatch(quizActions.resetQuiz());
   };
 
   const getNextQuestion = () => {
@@ -42,34 +45,50 @@ const Quiz = () => {
   };
 
   const hideAnswer = () => {
-    getNextQuestion();
     setShowAnswer(false);
+    getNextQuestion();
   };
 
-  const showNextQuestion = (answerWasCorrect) => {
-    if (answerWasCorrect) {
-      dispatch({ type: "answer_correctly" });
-      getNextQuestion();
-    } else {
-      setShowAnswer(true);
+  const evaluateAnswer = (userGuess) => {
+    const transformedShortAnswer = convertUTFtoLatin(
+      birds[currentIndex].name.toLowerCase().split(" ")[1].replace()
+    );
+    const transformedLongAnswer = convertUTFtoLatin(
+      birds[currentIndex].name.toLowerCase().replace()
+    );
+    const transformedGuess = convertUTFtoLatin(userGuess.toLowerCase());
+    const isCorrectAnswer = [
+      transformedShortAnswer,
+      transformedLongAnswer,
+    ].includes(transformedGuess);
+
+    setGuess(userGuess);
+    setShowAnswer(true);
+    setCorrect(isCorrectAnswer);
+
+    if (isCorrectAnswer) {
+      dispatch(quizActions.incrementCorrectAnswers());
     }
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.quiz}>
-        {showResult && <Result tryAgainHandler={tryAgain} />}
-        {!showResult && showAnswer && (
-          <Answer name={birds[currentIndex].name} onClose={hideAnswer} />
-        )}
-        {!showResult && !showAnswer && (
-          <Question
-            bird={{ ...birds[currentIndex] }}
-            showNextQuestion={showNextQuestion}
-          />
-        )}
-      </div>
-    </div>
+    <main className={classes.quiz}>
+      {showResult && <Result tryAgainHandler={tryAgain} />}
+      {!showResult && showAnswer && (
+        <Answer
+          answer={birds[currentIndex].name}
+          guess={guess}
+          onClose={hideAnswer}
+          correct={correct}
+        />
+      )}
+      {!showResult && !showAnswer && (
+        <Question
+          bird={{ ...birds[currentIndex] }}
+          evaluateAnswer={evaluateAnswer}
+        />
+      )}
+    </main>
   );
 };
 

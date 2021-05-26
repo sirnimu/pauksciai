@@ -1,25 +1,15 @@
-.container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #ffc84f;
-}
-
 .quiz {
   box-sizing: border-box;
   padding: 2rem;
   border-radius: 2rem;
   background-color: white;
-  height: clamp(50vh, 768px, 100vh);
-  width: clamp(50vh, 1080px, 100vh);
+  width: clamp(50vw, 1080px, 100vw);
+  height: clamp(70vh, 600px, 100vh);
 }
 
 @media only screen and (max-width: 600px) {
   .quiz {
-    padding: 1rem;
+    padding: 0 1rem;
     border-radius: 0;
   }
 }

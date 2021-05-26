@@ -11,13 +11,9 @@ const Question = (props) => {
     setValue(e.target.value);
   };
 
-  const submitAnswerHandler = (e, answer) => {
+  const submitAnswerHandler = (e) => {
     e.preventDefault();
-
-    const answerIsCorrect =
-      props.bird.name.toLowerCase().split(" ")[1] === value.toLowerCase();
-
-    props.showNextQuestion(answerIsCorrect);
+    props.evaluateAnswer(value);
     setIsLoading(true);
     setValue("");
   };

@@ -18,7 +18,8 @@
 
     min-width: 50%;
     max-width: 100%;
-    max-height: 80%;
+    min-height: 50%;
+    max-height: 75%;
   }
 
   form {
@@ -26,27 +27,21 @@
     justify-content: space-around;
     align-items: flex-end;
     box-sizing: border-box;
-    padding: 1rem;
-    min-width: 50%;
-
-    &.error {
-      input {
-        border-bottom-color: #cc0000;
-      }
-    }
 
     input {
       box-sizing: border-box;
-      height: 2rem;
+      height: 3rem;
       width: 100%;
       padding: 0 0.5rem;
       border: none;
       border-bottom: 2px solid #f5f5f5;
-      font-size: 1rem;
+      font-size: 1.25rem;
+      font-family: inherit;
     }
 
     button {
       margin: 0 0 0 1rem;
+      border-radius: 0 1rem 1rem 0;
     }
   }
 }
@@ -58,6 +53,7 @@
     }
 
     form {
+      width: 100%;
       flex-direction: column;
 
       input {
