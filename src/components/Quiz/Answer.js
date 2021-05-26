@@ -8,7 +8,7 @@ const Answer = (props) => {
       <div className={classes.answer}>
         <p>Teisingas atsakymas:</p>
         <h1>{props.name}</h1>
-        <Button>Kitas paukštis</Button>
+        <Button onClick={props.onClose}>Kitas paukštis</Button>
       </div>
     </Modal>
   );
