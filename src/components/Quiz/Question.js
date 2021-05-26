@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import classes from "./Question.module.scss";
 import Button from "../UI/Button";
@@ -7,6 +7,14 @@ const Question = (props) => {
   const imgRef = useRef();
   const [value, setValue] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const isTouchScreen = "ontouchstart" in document.documentElement;
+
+    if (imgRef.current && isTouchScreen) {
+      imgRef.current.focus();
+    }
+  }, []);
 
   const changeHandler = (e) => {
     setValue(e.target.value);
@@ -18,12 +26,6 @@ const Question = (props) => {
     setIsLoading(true);
     setValue("");
   };
-
-  const isTouchScreen = "ontouchstart" in document.documentElement;
-
-  if (imgRef.current && isTouchScreen) {
-    imgRef.current.focus();
-  }
 
   return (
     <section className={classes.question}>
