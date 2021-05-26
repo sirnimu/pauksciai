@@ -21,5 +21,10 @@
 @media only screen and (max-width: 600px) {
   .nav {
     margin: 0;
+    padding: 0.5rem;
+
+    img {
+      height: 36px;
+    }
   }
 }
